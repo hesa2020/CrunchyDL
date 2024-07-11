@@ -538,17 +538,6 @@ export async function downloadCrunchyrollPlaylist(
 
     const versions = await crunchyVersionsFetch(e)
 
-    if (!versions) {
-        messageBox('error', ['Cancel'], 2, 'Failed to get versions', 'Failed to get versions', 'Failed to get versions')
-        server.logger.log({
-            level: 'error',
-            message: `Failed to get versions ${downloadID}`,
-            timestamp: new Date().toISOString(),
-            section: 'crunchyrollDownloadProcess'
-        })
-        return
-    }
-
     var playlist = await crunchyGetPlaylist(e, geo)
 
     if (!playlist) {
@@ -688,7 +677,7 @@ export async function downloadCrunchyrollPlaylist(
     for (const s of subs) {
         var subPlaylist
 
-        if (playlist.data.audioLocale !== 'ja-JP') {
+        if (playlist.data.audioLocale !== 'ja-JP' && versions) {
             const foundStream = versions.find((v) => v.audio_locale === 'ja-JP')
             if (foundStream) {
                 subPlaylist = await crunchyGetPlaylist(foundStream.guid, foundStream.geo)
@@ -758,7 +747,7 @@ export async function downloadCrunchyrollPlaylist(
             }
             dubDownloadList.push(found)
             console.log(`Audio ${d}.aac found, adding to download`)
-        } else if (versions.length === 0) {
+        } else if (!versions) {
             const foundSub = playlist.data.subtitles.find((sub) => sub.language === d)
             if (foundSub) {
                 subDownloadList.push({ ...foundSub, isDub: true })
@@ -780,7 +769,7 @@ export async function downloadCrunchyrollPlaylist(
         }
     }
 
-    if (dubDownloadList.length === 0) {
+    if (dubDownloadList.length === 0 && versions) {
         const jpVersion = versions.find((v) => v.audio_locale === 'ja-JP')
 
         if (jpVersion) {
@@ -1012,7 +1001,7 @@ export async function downloadCrunchyrollPlaylist(
 
             var hardsubGEO: string | undefined
 
-            if (hardsub.format === 'dub') {
+            if (hardsub.format === 'dub' && versions) {
                 const found = versions.find((h) => h.audio_locale === hardsub.locale)
                 if (!found) {
                     hardsubURL = undefined
@@ -1028,7 +1017,7 @@ export async function downloadCrunchyrollPlaylist(
                 }
             }
 
-            if (hardsub.format === 'sub') {
+            if (hardsub.format === 'sub' && versions) {
                 const found = versions.find((h) => h.audio_locale === 'ja-JP')
                 if (!found) {
                     hardsubURL = undefined

@@ -232,7 +232,6 @@ async function crunchyLoginFetch(user: string, passw: string) {
 }
 
 export async function crunchyVersionsFetch(q: string) {
-    
     const account = await loggedInCheck('CR')
 
     if (!account) return
@@ -257,13 +256,13 @@ export async function crunchyVersionsFetch(q: string) {
                 data: {
                     episode_metadata: {
                         versions: {
-                            audio_locale: string,
-                            guid: string,
-                            is_premium_only: boolean,
-                            media_guid: string,
-                            original: boolean,
-                            season_guid: string,
-                            variant: string,
+                            audio_locale: string
+                            guid: string
+                            is_premium_only: boolean
+                            media_guid: string
+                            original: boolean
+                            season_guid: string
+                            variant: string
                             geo: string
                         }[]
                     }
