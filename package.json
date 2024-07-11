@@ -2,7 +2,7 @@
     "name": "crunchydl",
     "author": "OpenSTDL",
     "description": "Crunchyroll Downloader",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "private": true,
     "main": ".output/src/electron/background.js",
     "repository": "https://github.com/OpenSTDL/CrunchyDL",
