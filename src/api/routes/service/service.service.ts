@@ -288,7 +288,7 @@ async function checkPlaylists() {
         }
 
         for (const e of eps) {
-            if (isDownloading < maxDownloading && e.dataValues.status === 'waiting') {
+            if (isDownloading <= maxDownloading && e.dataValues.status === 'waiting') {
                 updatePlaylistByID(e.dataValues.id, 'preparing')
                 isDownloading++
                 server.logger.log({
